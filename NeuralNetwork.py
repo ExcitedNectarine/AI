@@ -2,7 +2,7 @@ import math
 import random
 
 def sigmoid(x, theta):
-	return 1 / (1 + math.exp(-(x - theta)))
+	return 1 / (1 + math.exp(1) ** (-(x - theta)))
 	
 def step(x, theta):
 	return 1 if x >= theta else 0
@@ -65,51 +65,59 @@ def multilayer():
 	while p <= iterations - 4:
 		epoc_sum_error = 0
 		for i in range(4):
-			print(p)
 			x[2] = x1[i] * weights[0][2] + x2[i] * weights[1][2]
-			y[2] = 1 / (1 + math.exp(1) ** (-(x[2] - thetas[2])))
-			
+			y[2] = sigmoid(x[2], thetas[2])
 			x[3] = x1[i] * weights[0][3] + x2[i] * weights[1][3]
-			y[3] = 1 / (1 + math.exp(1) ** (-(x[3] - thetas[3])))
-			
-			x[4] = x1[i] * weights[0][4] + x2[i] * weights[1][4]
-			y[4] = 1 / (1 + math.exp(1) ** (-(x[4] - thetas[4])))
-			
+			y[3] = sigmoid(x[3], thetas[3])
+			x[4] = y[2] * weights[2][4] + y[3] * weights[3][4]
+			y[4] = sigmoid(x[4], thetas[4])
 			e[4] = yd5[i] - y[4];
+			
 			delta[4] = y[4] * (1 - y[4]) * e[4]
 			wcurrent[2][4] = weights[2][4]
 			wcurrent[3][4] = weights[3][4]
 			weights[2][4] += alpha * y[2] * delta[4]
 			weights[3][4] += alpha * y[3] * delta[4]
-			thetas[4] += alpha * -1 * delta[4]
+			thetas[4] += alpha * (-1) * delta[4]
 			
 			delta[2] = y[2] * (1 - y[2]) * delta[4] * wcurrent[2][4]
 			weights[0][2] += alpha * x1[i] * delta[2]
 			weights[1][2] += alpha * x1[i] * delta[2]
-			thetas[2] += alpha * -1 * delta[2]
+			thetas[2] += alpha * (-1) * delta[2]
 
 			delta[3] = y[3] * (1 - y[3]) * delta[3] * wcurrent[3][4]
 			weights[0][3] += alpha * x1[i] * delta[3]
 			weights[1][3] += alpha * x2[i] * delta[3]
-			thetas[3] += alpha * -1 * delta[3]
+			thetas[3] += alpha * (-1) * delta[3]
 			
 			tx[2] = x1[i] * weights[0][2] + x2[i] * weights[1][2];
-			ty[2] = 1 / (1 + (math.exp(1)) ** (-(tx[2] - thetas[2])));
-			
+			ty[2] = sigmoid(tx[2], thetas[2])
 			tx[3] = x1[i] * weights[0][3] + x2[i] * weights[1][3];
-			ty[3] = 1 / (1 + (math.exp(1)) ** (-(tx[3] - thetas[3])));
+			ty[3] = sigmoid(tx[3], thetas[3])
+			tx[4] = ty[2] * weights[2][4] + ty[3] * weights[3][4]
+			ty[4] = sigmoid(tx[3], thetas[3])
+			te[4] = yd5[i] - ty[4]
 			
-			tx[4] = x1[i] * weights[0][4] + x2[i] * weights[1][4];
-			ty[4] = 1 / (1 + (math.exp(1)) ** (-(tx[4] - thetas[4])));
-			
-			tx[4] = yd5[i] - ty[4]
+			print(str(p) + " =======================")
+			print("W13: " + str(weights[0][2]))
+			print("W14: " + str(weights[1][2]))
+			print("W23: " + str(weights[0][3]))
+			print("W24: " + str(weights[1][2]))
+			print("W35: " + str(weights[2][4]))
+			print("W45: " + str(weights[3][4]))
+			print("T3: " + str(thetas[2]))
+			print("T4: " + str(thetas[3]))
+			print("T5: " + str(thetas[4]))
+			print("Y3: " + str(y[2]))
+			print("Y3: " + str(y[3]))
+			print("Y3: " + str(y[4]))
 
 			epoc_sum_error += te[4] ** 2
 			p += 1
 			
-			print("Y3: " + str(y[2]) + " Y4: " + str(y[3]) + " Y5: " + str(y[4]))
-			input()
-			
+		if epoc_sum_error < 0.001:
+			input("DONE")
+			break
 			
 singlelayer()
 input()
