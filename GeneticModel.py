@@ -3,12 +3,10 @@ import random
 mutation_rate = 0.01
 population = 8
 desired_fitness = 16
+chromosome_length = 16
 
 def create_bits(size):
-	bits = []
-	for i in range(size):
-		bits += ["1"] if random.random() <= 0.5 else ["0"]
-	return bits
+	return ["1" if random.random() <= 0.5 else "0" for i in range(size)]
 	
 def get_fitness(bits):
 	value = 0
@@ -28,7 +26,7 @@ def main():
 	random.seed()
 	
 	final = None
-	old_generation = [create_bits(desired_fitness) for i in range(population)]
+	old_generation = [create_bits(chromosome_length) for i in range(population)]
 	iter = 0
 	
 	while final is None:
@@ -41,7 +39,7 @@ def main():
 				final = chromosome
 			total_fitness += get_fitness(chromosome)
 		
-		new_generation = [["0"] * desired_fitness for i in range(population)]
+		new_generation = [["0"] * chromosome_length for i in range(population)]
 		for i in range(population):
 			choice1 = wheel_spin(old_generation, total_fitness)
 			choice2 = wheel_spin(old_generation, total_fitness)
