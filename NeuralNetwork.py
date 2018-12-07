@@ -65,6 +65,7 @@ def multilayer():
 	while p <= iterations - 4:
 		epoc_sum_error = 0
 		for i in range(4):
+			# Calculate output of neurons before adjusting weights
 			x[2] = x1[i] * weights[0][2] + x2[i] * weights[1][2]
 			y[2] = sigmoid(x[2], thetas[2])
 			x[3] = x1[i] * weights[0][3] + x2[i] * weights[1][3]
@@ -73,6 +74,7 @@ def multilayer():
 			y[4] = sigmoid(x[4], thetas[4])
 			e[4] = yd5[i] - y[4];
 			
+			# Adjust weights for neurons, starting at the 5th (output layer)
 			delta[4] = y[4] * (1 - y[4]) * e[4]
 			wcurrent[2][4] = weights[2][4]
 			wcurrent[3][4] = weights[3][4]
@@ -80,16 +82,19 @@ def multilayer():
 			weights[3][4] += alpha * y[3] * delta[4]
 			thetas[4] += alpha * (-1) * delta[4]
 			
+			# Adjust weights for 3rd neuron
 			delta[2] = y[2] * (1 - y[2]) * delta[4] * wcurrent[2][4]
 			weights[0][2] += alpha * x1[i] * delta[2]
 			weights[1][2] += alpha * x1[i] * delta[2]
 			thetas[2] += alpha * (-1) * delta[2]
 
+			# Adjust weights for 4th neuron
 			delta[3] = y[3] * (1 - y[3]) * delta[3] * wcurrent[3][4]
 			weights[0][3] += alpha * x1[i] * delta[3]
 			weights[1][3] += alpha * x2[i] * delta[3]
 			thetas[3] += alpha * (-1) * delta[3]
 			
+			# Calculate output of neurons after adjusting weights, and use to adjust epoc_sum_error
 			tx[2] = x1[i] * weights[0][2] + x2[i] * weights[1][2];
 			ty[2] = sigmoid(tx[2], thetas[2])
 			tx[3] = x1[i] * weights[0][3] + x2[i] * weights[1][3];
