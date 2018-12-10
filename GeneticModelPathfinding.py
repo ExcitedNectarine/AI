@@ -44,16 +44,16 @@ class Map:
 		for i in range(0, chromosome_length, 2):
 			pair = chromosome[i] + chromosome[i + 1]
 			if pair == "00":
-				if self.map[y - 1][x] == "1" and y - 1 >= 0:
+				if y - 1 >= 0 and self.map[y - 1][x] != "1":
 					y -= 1
 			elif pair == "01":
-				if self.map[y][x - 1] == "1" and x - 1 >= 0:
+				if x - 1 >= 0 and self.map[y][x - 1] != "1":
 					x -= 1
 			elif pair == "10":
-				if self.map[y + 1][x] == "1" and y + 1 <= self.height:
+				if y + 1 < self.height and self.map[y + 1][x] != "1":
 					y += 1
 			elif pair == "11":
-				if self.map[y][x + 1] == "1" and x + 1 <= self.width:
+				if x + 1 < self.width and self.map[y][x + 1] != "1":
 					x += 1
 		
 		# Return the distance away from the end point
@@ -64,7 +64,6 @@ def create_chromosome(size):
 	
 def get_fitness(map, chromosome):
 	dx, dy = map.run(chromosome)
-	print("DX: " + str(dx) + " DY: " + str(dy) + " FITNESS: " + str(1 / (dx + dy + 1)))
 	return 1 / (dx + dy + 1)
 	
 def wheel_spin(map, generation, total_fitness):
