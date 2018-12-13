@@ -2,8 +2,6 @@ import random
 
 mutation_rate = 0.01
 population = 8
-desired_fitness = 16
-chromosome_length = 16
 
 class Map:
 	width = 0
@@ -41,7 +39,7 @@ class Map:
 		x, y = self.start
 		
 		# Go through each move in the chromosome
-		for i in range(0, chromosome_length, 2):
+		for i in range(0, len(chromosome), 2):
 			pair = chromosome[i] + chromosome[i + 1]
 			if pair == "00":
 				if y - 1 >= 0 and self.map[y - 1][x] != "1":
@@ -77,11 +75,13 @@ def wheel_spin(map, generation, total_fitness):
 def main():
 	random.seed()
 	
+	map = Map("Labs15and16TerrainFile2.txt")
+	chromosome_length = (map.width * map.height)
+	print(chromosome_length)
+	
 	final = None
 	old_generation = [create_chromosome(chromosome_length) for i in range(population)]
 	iter = 0
-	
-	map = Map("Labs15and16TerrainFile1.txt")
 	
 	while final is None:
 		iter += 1

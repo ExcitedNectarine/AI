@@ -59,4 +59,5 @@ def main():
 		
 	input("FINAL: " + ''.join(final))
 	
-main()
+if __name__ == "__main__":
+	main()

@@ -124,7 +124,8 @@ def multilayer():
 			input("DONE")
 			break
 			
-singlelayer()
-input()
-multilayer()
-input()
+if __name__ == "__main__":
+	singlelayer()
+	input()
+	multilayer()
+	input()
